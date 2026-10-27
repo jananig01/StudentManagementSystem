@@ -1,0 +1,96 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StudentHub</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-layout">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a asp-page="/Index" class="brand">
+                <span class="brand-icon">🎓</span>
+                <span class="brand-text">
+                    <strong>StudentHub</strong>
+                    <small>Student Management System</small>
+                </span>
+            </a>
+
+            <p class="sidebar-label">MAIN MENU</p>
+
+            <nav class="sidebar-nav">
+                <a asp-page="/Index" class="nav-item active">
+                    <span class="nav-icon">⌂</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a asp-page="/Index"
+                   asp-fragment="student-list"
+                   class="nav-item">
+                    <span class="nav-icon">♙</span>
+                    <span>Students</span>
+                </a>
+
+                <a asp-page="/Index"
+                   asp-fragment="add-student"
+                   class="nav-item">
+                    <span class="nav-icon">＋</span>
+                    <span>Add Student</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="profile-avatar">A</div>
+
+                <div class="profile-info">
+                    <strong>Administrator</strong>
+                    <small>Admin</small>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-search">
+                    <span>⌕</span>
+                    <span>Student Management Dashboard</span>
+                </div>
+
+                <div class="topbar-profile">
+                    <div class="profile-avatar">A</div>
+                    <div>
+                        <strong>Administrator</strong>
+                        <small>Student Management</small>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <section class="page-content">
+                @RenderBody()
+            </section>
+
+            <!-- Footer -->
+            <footer class="page-footer">
+                <span><strong>StudentHub</strong> · Student Management System</span>
+                <span>Built with ASP.NET Core</span>
+            </footer>
+
+        </main>
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

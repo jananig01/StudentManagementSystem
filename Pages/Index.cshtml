@@ -1,0 +1,277 @@
+﻿
+@page
+@model StudentManagementSystem.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid">
+
+    <!-- Dashboard Heading -->
+    <div class="mb-4">
+        <h1>Dashboard Overview</h1>
+        <p>Manage your students, courses and records in one place.</p>
+    </div>
+
+    <!-- Status Message -->
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-warning" role="alert">
+            @Model.Message
+        </div>
+    }
+
+    <!-- Dashboard Statistics -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+            <div class="stat-card students-stat">
+                <div class="stat-icon">
+                    <span>👨‍🎓</span>
+                </div>
+
+                <div>
+                    <p class="stat-label">Total Students</p>
+                    <h2 class="stat-number">@Model.TotalStudents</h2>
+                    <p class="stat-description">Registered students</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="stat-card courses-stat">
+                <div class="stat-icon">
+                    <span>📚</span>
+                </div>
+
+                <div>
+                    <p class="stat-label">Total Courses</p>
+                    <h2 class="stat-number">@Model.TotalCourses</h2>
+                    <p class="stat-description">Unique courses</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Add Student Section -->
+    <div id="add-student" class="student-card mb-4">
+
+        <div class="section-heading">
+            <h3>Add New Student</h3>
+            <p>Enter the student details below.</p>
+        </div>
+
+        <form method="post">
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NewStudent.Name">Student Name</label>
+
+                    <input asp-for="NewStudent.Name"
+                           class="form-control"
+                           placeholder="Enter student name"
+                           required />
+
+                    <span asp-validation-for="NewStudent.Name"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NewStudent.Age">Age</label>
+
+                    <input asp-for="NewStudent.Age"
+                           type="number"
+                           min="1"
+                           max="120"
+                           class="form-control"
+                           placeholder="Enter age"
+                           required />
+
+                    <span asp-validation-for="NewStudent.Age"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NewStudent.Course">Course</label>
+
+                    <input asp-for="NewStudent.Course"
+                           class="form-control"
+                           placeholder="Enter course"
+                           required />
+
+                    <span asp-validation-for="NewStudent.Course"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NewStudent.Email">Email</label>
+
+                    <input asp-for="NewStudent.Email"
+                           type="email"
+                           class="form-control"
+                           placeholder="Enter email address"
+                           required />
+
+                    <span asp-validation-for="NewStudent.Email"
+                          class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                + Save Student
+            </button>
+
+        </form>
+    </div>
+
+    <!-- Student List Section -->
+    <div id="student-list" class="student-card">
+
+        <div class="section-heading">
+            <h3>Student List</h3>
+            <p>Search, filter and manage registered students.</p>
+        </div>
+
+        <!-- Search and Filter Form -->
+        <form method="get" class="row g-3 mb-4">
+
+            <div class="col-md-5">
+                <label for="SearchName" class="form-label">
+                    Search by Name
+                </label>
+
+                <input type="text"
+                       id="SearchName"
+                       name="SearchName"
+                       value="@Model.SearchName"
+                       class="form-control"
+                       placeholder="Enter student name..." />
+            </div>
+
+            <div class="col-md-5">
+                <label for="FilterCourse" class="form-label">
+                    Filter by Course
+                </label>
+
+                <select id="FilterCourse"
+                        name="FilterCourse"
+                        class="form-select">
+
+                    <option value="">All Courses</option>
+
+                    @foreach (var course in Model.Courses)
+                    {
+                        if (string.Equals(
+                            course,
+                            Model.FilterCourse,
+                            StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="@course" selected>
+                                @course
+                            </option>
+                        }
+                        else
+                        {
+                            <option value="@course">
+                                @course
+                            </option>
+                        }
+                    }
+
+                </select>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-end gap-2">
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
+
+                <a asp-page="/Index"
+                   class="btn btn-outline-secondary">
+                    Clear
+                </a>
+            </div>
+
+        </form>
+
+        <!-- Matching Student Count -->
+        <p class="text-muted">
+            Showing @Model.Students.Count matching student(s).
+        </p>
+
+        <!-- Student Data Table -->
+        <div class="table-responsive">
+
+            <table class="table table-striped">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Course</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model.Students.Count > 0)
+                    {
+                        @foreach (var student in Model.Students)
+                        {
+                            <tr>
+                                <td>@student.Id</td>
+                                <td>@student.Name</td>
+                                <td>@student.Age</td>
+                                <td>@student.Course</td>
+                                <td>@student.Email</td>
+
+                                <td class="text-nowrap">
+
+                                    <a asp-page="/Edit"
+                                       asp-route-id="@student.Id"
+                                       class="btn btn-primary btn-sm">
+                                        Edit
+                                    </a>
+
+                                    <form method="post"
+                                          asp-page-handler="Delete"
+                                          asp-route-id="@student.Id"
+                                          style="display:inline"
+                                          onsubmit="return confirm('Are you sure you want to delete this student?');">
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm">
+                                            Delete
+                                        </button>
+
+                                    </form>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                No students found. Try another name or course.
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

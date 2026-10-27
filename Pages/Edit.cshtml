@@ -1,0 +1,62 @@
+
+@page "{id:int}"
+@model StudentManagementSystem.Pages.EditModel
+
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
+<div class="container mt-4">
+    <h1>Edit Student</h1>
+
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-warning">
+            @Model.Message
+        </div>
+    }
+
+    <form method="post">
+        <input type="hidden" asp-for="Student.Id" />
+
+        <div class="mb-3">
+            <label asp-for="Student.Name">Student Name</label>
+            <input asp-for="Student.Name"
+                   class="form-control"
+                   required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Student.Age">Age</label>
+            <input asp-for="Student.Age"
+                   type="number"
+                   min="1"
+                   max="120"
+                   class="form-control"
+                   required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Student.Course">Course</label>
+            <input asp-for="Student.Course"
+                   class="form-control"
+                   required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Student.Email">Email</label>
+            <input asp-for="Student.Email"
+                   type="email"
+                   class="form-control"
+                   required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Update Student
+        </button>
+
+        <a asp-page="/Index" class="btn btn-secondary">
+            Cancel
+        </a>
+    </form>
+</div>
